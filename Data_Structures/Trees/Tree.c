@@ -24,7 +24,6 @@ void addnewNode(int new_value,Tree* CurrNode,int loR){
 	Tree* NewNode= (Tree*)malloc(sizeof(Tree*));
 
 	NewNode->parent_node = CurrNode;
-
 	NewNode->value = new_value;
 
 	if (loR == 0){
@@ -34,9 +33,10 @@ void addnewNode(int new_value,Tree* CurrNode,int loR){
 	};
 }
 
-// Utils:
 Tree* newNode(int nval) {
-// Create new node
+/*
+	Objective: Create new Node
+*/
 
 	Tree* NewNode = (Tree*)malloc(sizeof(Tree*));
 	NewNode->value = nval;
@@ -51,8 +51,8 @@ Tree* TreeInsert(int new_value,Tree* CurrNode){
 	}
 	else{
 		if (new_value < CurrNode->value )
-			CurrNode->left_child = TreeInsertBySir(new_value,CurrNode->left_child);
-		else CurrNode->right_child = TreeInsertBySir(new_value,CurrNode->right_child);
+			CurrNode->left_child   = TreeInsert(new_value,CurrNode->left_child);
+		else CurrNode->right_child = TreeInsert(new_value,CurrNode->right_child);
 	}
 
 }
@@ -80,10 +80,10 @@ Tree* Search_Tree(int fvalue,Tree* CurrNode,int lor){
 
 Tree* del_node_1child(Tree* Node,int delit){
 /*
- Objective: delete the node with only one child
+	Objective: delete the node with only one child
 
- More-info: 
-			if delit == 0 then dont free the node
+	More-info: 
+				if delit == 0 then dont free the node
 */
 	// connect the node's parent to this nodes's childnode
 	if (Node->left_child != NULL){
@@ -111,9 +111,21 @@ Tree* del_node_1child(Tree* Node,int delit){
 }
 
 Tree* delete_node(int fval,Tree* CurrNode){
-	// delete the node and return new tree
+/*
 
-	// case1 : no child
+	Objective:
+			delete the specified node
+
+	Input: 
+			fval: value of the node that we want to remove
+			CurrNode: Current Node reference
+	Output: 
+			Pointer to the tree Node
+
+*/
+
+	// CASE-1: no child(terminal node)
+
 	// Search that node
 	Tree* node2del = Search_Tree(fval,CurrNode,LeftOrRight);// search the Tree and return that node
 
@@ -130,14 +142,14 @@ Tree* delete_node(int fval,Tree* CurrNode){
 		return NULL;
 	}
 
-	// case 2:1child
+	// CASE-2: 1child
 	if (node2del->left_child == NULL || node2del->right_child == NULL){
 		del_node_1child(node2del,1);
 
 		return NULL;
 	}
 
-	// case 3: 2 child
+	// CASE-3: 2child
 	// Find the smallest node in the right side of the CurrNode and replace CurrNode from this smallest valued node and free this CurrNode
 
 	// searching
@@ -154,9 +166,6 @@ Tree* delete_node(int fval,Tree* CurrNode){
 		}else{
 			// go right
 			if (curr_node ->right_child != NULL){
-				// if its true then, this curr_node must be the smallest node so this state is equevalent to 1 child deletion
-				// but instead of deletion the child node simply do the connection with its parent and dont delete
-				// curr_node... because we need to for replacing the Node which is going to be deleted.
 
 				del_node_1child(curr_node,0);// dont delete it just make the connection
 			}
@@ -178,7 +187,6 @@ Tree* delete_node(int fval,Tree* CurrNode){
 	node2del->right_child->parent_node = curr_node;
 
 	// check weather node2del is the Left to the node2del's parent_node or to its right
-
 
 	if (node2del->parent_node->left_child == node2del)
 		node2del->parent_node->left_child = curr_node;
