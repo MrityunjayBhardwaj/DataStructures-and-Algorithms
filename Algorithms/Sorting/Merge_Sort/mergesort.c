@@ -43,10 +43,6 @@ int* compareNsort(int* arr1[],int* arr2[],int len){
         
     }
 
-    for (int i=0;i<40;i++){
-        printf("[%i] %i\n",i,ansarr[i]);
-    }
-
     return ansarr;
 }
 
